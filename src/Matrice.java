@@ -33,24 +33,37 @@ public class Matrice {
         int n = val.length / m;
         this.n = n;
         this.m = m;
-        this.modulo = 5;
         /*
         TODO initialiser le modulo a la valeur max du tableau
         */
-        int indexColonne = 0;
-        int indexLigne = 0;
-
-        int[][] mat = new int[n][m];
-
-        // m est le nombre de colonne
-        for (int i = 0; i < val.length; i++) {
-            mat[indexLigne][indexColonne] = val[i];
-            if ( indexColonne++ + 1 == m) {
-                indexLigne++;
-                indexColonne = 0;
-            }
+        if (val.length == 0) {
+            throw new RuntimeException("You must provide valors for the matrix.");
         }
-        matrice = mat;
+        try {
+            int maxVal = val[0];
+            for (int x : val) {
+                if (x > maxVal) maxVal = x;
+            }
+            this.modulo = maxVal + 1;
+
+            int indexColonne = 0;
+            int indexLigne = 0;
+
+            int[][] mat = new int[n][m];
+
+            // m est le nombre de colonne
+            for (int i = 0; i < val.length; i++) {
+                mat[indexLigne][indexColonne] = val[i];
+                if (indexColonne++ + 1 == m) {
+                    indexLigne++;
+                    indexColonne = 0;
+                }
+            }
+            matrice = mat;
+        }
+        catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
 
@@ -74,7 +87,7 @@ public class Matrice {
     // Addition de deux matrices
     public static Matrice operation( Matrice matrice1, Matrice matrice2, Matrice matrice3, int choix) {
         if( matrice1.modulo != matrice2.modulo ) {
-            throw new RuntimeException();
+            throw new RuntimeException("Modulus are not compatible.");
         }
         // TODO mettre un switch ?
         // TODO corrigé pour avoir meme reponse enonce
@@ -113,9 +126,85 @@ public class Matrice {
         return operation(matrice0, matrice1, matrice2, 2);
     }
 
+    public Matrice addTo(Matrice other) {
+        Matrice result = new Matrice(this.n, this.m, this.modulo);
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.m; j++) {
+                result.matrice[i][j] = Math.floorMod(this.matrice[i][j] + other.matrice[i][j], this.modulo);
+            }
+
+        }
+        return result;
+    }
+
+    public Matrice subtractTo(Matrice other) {
+        Matrice result = new Matrice(this.n, this.m, this.modulo);
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.m; j++) {
+                result.matrice[i][j] = Math.floorMod(this.matrice[i][j] - other.matrice[i][j], this.modulo);
+            }
+
+        }
+        return result;
+    }
+
+    public Matrice multBy(Matrice other) {
+        Matrice result = new Matrice(this.n, this.m, this.modulo);
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.m; j++) {
+                result.matrice[i][j] = Math.floorMod(this.matrice[i][j] * other.matrice[i][j], this.modulo);
+            }
+
+        }
+        return result;
+    }
+
+    public Matrice getResultMatrix(Matrice other) {
+        int n = Math.max(this.n, other.n);
+        int m = Math.max(this.m, other.m);
+        int[] tab = new int[n * m];
+        return new Matrice(m, tab);
+    }
+
+    public Matrice operation(Matrice other, int op) {
+        if (this.modulo != other.modulo) {
+            throw new RuntimeException("Modulus are not compatible.");
+        }
+        try {
+
+            Matrice operand1 = getResultMatrix(other);
+            Matrice operand2 = getResultMatrix(other);
+            operand1.modulo = this.modulo;
+            operand2.modulo = this.modulo;
+            for (int i = 0; i < this.n; i++) {
+                for (int j = 0; j < this.m; j++) {
+                    operand1.matrice[i][j] = this.matrice[i][j];
+                }
+            }
+            for (int i = 0; i < other.n; i++) {
+                for (int j = 0; j < other.m; j++) {
+                    operand2.matrice[i][j] = other.matrice[i][j];
+                }
+            }
+
+            switch(op) {
+                case 0:
+                    return operand1.addTo(operand2);
+                case 1:
+                    return operand1.subtractTo(operand2);
+                case 2:
+                    return operand1.multBy(operand2);
+            }
+        }
+        catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
+        /*
        // test constructeur sans para
         System.out.println("constructeur");
         Matrice m = new Matrice(2, 3, 10);
@@ -158,6 +247,22 @@ public class Matrice {
         Matrice w3 = multiplication(w2,w1);
         System.out.println(w1);
         System.out.println(w2);
-        System.out.println(w3);
+        System.out.println(w3);*/
+        System.out.println("one");
+        Matrice m1 = new Matrice(4, new int[]{1,3,1,1,3,2,4,2,1,0,1,0});
+        System.out.println(m1);
+
+        System.out.println("two");
+        Matrice m2 = new Matrice(5, new int[]{1,4,2,3,2,0,1,0,4,2,0,0,2,0,2});
+        System.out.println(m2);
+
+        System.out.println("one + two");
+        System.out.println(m1.operation(m2, 0));
+
+        System.out.println("one - two");
+        System.out.println(m1.operation(m2, 1));
+
+        System.out.println("one x two");
+        System.out.println(m1.operation(m2, 2));
     }
 }
