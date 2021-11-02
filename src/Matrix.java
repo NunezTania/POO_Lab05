@@ -28,7 +28,7 @@ public class Matrix {
 
 
     // constructeur aléatoire
-    Matrix(int n, int m, int modulo) {
+    public Matrix(int n, int m, int modulo) {
         this.n = n;
         this.m = m;
         this.modulus = modulo;
@@ -45,7 +45,7 @@ public class Matrix {
 
 
     // Constructeur par valeur
-    Matrix(int m, int[] val){
+    public Matrix(int m, int[] val){
         if (val.length == 0) {
             throw new RuntimeException("You must provide valors for the matrix.");
         }
