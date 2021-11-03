@@ -6,7 +6,6 @@ public class Addition extends MatrixOperation{
             for (int j = 0; j < m1.getM(); j++) {
                 result.getMatrice()[i][j] = Math.floorMod(m1.getMatrice()[i][j] + m2.getMatrice()[i][j], m1.getModulus());
             }
-
         }
         return result;
     }

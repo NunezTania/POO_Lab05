@@ -145,21 +145,25 @@ public class Matrix {
 
     public static void main(String[] args) {
 
+        int n1 = 2, m1 = 5;
+        int n2 = 4, m2 = 3;
+        int modulus = 5;
+
         System.out.println("one");
-        Matrix m1 = new Matrix(4, new int[]{1,3,1,1,3,2,4,2,1,0,1,0});
+        Matrix mat1 = new Matrix(n1, m1, modulus);
         System.out.println(m1);
 
         System.out.println("two");
-        Matrix m2 = new Matrix(5, new int[]{1,4,2,3,2,0,1,0,4,2,0,0,2,0,2});
+        Matrix mat2 = new Matrix(n2, m2, modulus);
         System.out.println(m2);
 
         System.out.println("one + two");
-        System.out.println(m1.addTo(m2));
+        System.out.println(mat1.addTo(mat2));
 
         System.out.println("one - two");
-        System.out.println(m1.subtractTo(m2));
+        System.out.println(mat1.subtractTo(mat2));
 
         System.out.println("one x two");
-        System.out.println(m1.multBy(m2));
+        System.out.println(mat1.multBy(mat2));
     }
 }
