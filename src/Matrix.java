@@ -29,36 +29,45 @@ public class Matrix {
 
     // constructeur aléatoire
     public Matrix(int n, int m, int modulo) {
-        this.n = n;
-        this.m = m;
-        this.modulus = modulo;
-        int[][] mat = new int[n][m];
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                Random rand = new Random();
-                mat[i][j] = rand.nextInt(modulo);
-            }
+        if (modulo <= 0) {
+            throw new RuntimeException("The modulus must be greater than 0.");
         }
-        matrice = mat;
+        try {
+            this.n = n;
+            this.m = m;
+            this.modulus = modulo;
+            int[][] mat = new int[n][m];
+
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    Random rand = new Random();
+                    mat[i][j] = rand.nextInt(modulo);
+                }
+            }
+            matrice = mat;
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
 
     // Constructeur par valeur
-    public Matrix(int m, int[] val){
+    public Matrix(int m, int[] val) {
         if (val.length == 0) {
             throw new RuntimeException("You must provide valors for the matrix.");
         }
         try {
-            int n = val.length / m;
-            this.n = n;
-            this.m = m;
+
             int maxVal = val[0];
 
             for (int x : val) {
                 maxVal = Math.max(x, maxVal);
             }
+            if (maxVal <= 0) throw new RuntimeException("Modulus must be greater than 0.");
 
+            int n = val.length / m;
+            this.n = n;
+            this.m = m;
             this.modulus = maxVal + 1;
 
             int indexColonne = 0;
@@ -82,11 +91,11 @@ public class Matrix {
     public String toString(){
         String result = "";
         for (int i = 0; i < n; i++) {
-            result += "[ ";
+            result += "| ";
             for (int j = 0; j < m; j++) {
                 result += matrice[i][j] + " ";
             }
-            result += "]\n";
+            result += "|\n";
         }
         result += "\n";
         return result;
@@ -120,8 +129,7 @@ public class Matrix {
             m1.modulus = this.modulus;
             m2.modulus = this.modulus;
             return op.operation(m1, m2);
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             System.err.println(e.getMessage());
         }
         return null;
@@ -149,13 +157,15 @@ public class Matrix {
         int n2 = 4, m2 = 3;
         int modulus = 5;
 
+        System.out.println("Normal behaviours for operations between two matrixes :");
+
         System.out.println("one");
         Matrix mat1 = new Matrix(n1, m1, modulus);
-        System.out.println(m1);
+        System.out.println(mat1);
 
         System.out.println("two");
         Matrix mat2 = new Matrix(n2, m2, modulus);
-        System.out.println(m2);
+        System.out.println(mat2);
 
         System.out.println("one + two");
         System.out.println(mat1.addTo(mat2));
@@ -165,5 +175,30 @@ public class Matrix {
 
         System.out.println("one x two");
         System.out.println(mat1.multBy(mat2));
+
+        // Abnormal behaviour
+
+        int n3 = 2, m3 = 5;
+        int n4 = 4, m4 = 3;
+        int modulus1 = 5;
+        int modulus2 = 4;
+
+        System.out.println("Operations between two uncompatible matrixes :");
+        System.out.println("one");
+        Matrix mat3 = new Matrix(n3, m3, modulus1);
+        System.out.println(mat3);
+
+        System.out.println("two");
+        Matrix mat4 = new Matrix(n4, m4, modulus2);
+        System.out.println(mat4);
+
+        System.out.println("one + two");
+        System.out.println(mat3.addTo(mat4));
+
+        System.out.println("one - two");
+        System.out.println(mat3.subtractTo(mat4));
+
+        System.out.println("one x two");
+        System.out.println(mat3.multBy(mat4));
     }
 }
