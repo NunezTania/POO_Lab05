@@ -1,7 +1,9 @@
 /**
- * Classe Matrice
- * @autors Tania Nunez, Magali Egger
+ * Représenter une matrice
+ * @autor Tania Nunez
+ * @autor Magali Egger
  */
+
 
 import java.util.Random;
 import java.lang.Math;
@@ -27,15 +29,22 @@ public class Matrix {
      * @throws RuntimeException indique que le modulo doit être supérieur à zéro
      */
     public Matrix(int n, int m, int modulo) {
+        // vérification du modulo
         if (modulo <= 0) {
             throw new RuntimeException("The modulus must be greater than 0.");
         }
+        // vérification des tailles m et n
+        if(n <= 0 || m <= 0){
+            throw new RuntimeException("The sizes of the matrix must be greater than 0");
+        }
+
         try {
             this.n = n;
             this.m = m;
             this.modulus = modulo;
             int[][] mat = new int[n][m];
 
+            // chaque élément de la matrice prend une valeur random entre 0 et modulo-1
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < m; j++) {
                     Random rand = new Random();
@@ -60,6 +69,7 @@ public class Matrix {
         if (val.length == 0) {
             throw new RuntimeException("You must provide values for the matrix.");
         }
+
         try {
 
             int maxVal = val[0];
@@ -69,17 +79,17 @@ public class Matrix {
                 maxVal = Math.max(x, maxVal);
             }
 
-            int n = val.length / m;
-            this.n = n;
+            this.n = val.length / m;
             this.m = m;
             this.modulus = maxVal + 1;
+            if(n <= 0 || m <= 0){
+                throw new RuntimeException("The sizes of the matrix must be greater than 0");
+            }
 
             matrice = new int[n][m];
 
             for (int i = 0; i < n; i++) {
-                for (int j = 0; j < m; j++) {
-                    matrice[i][j] = val[i * m + j];
-                }
+                System.arraycopy(val, i * m, matrice[i], 0, m);
             }
         }
         catch (RuntimeException e) {
@@ -92,16 +102,16 @@ public class Matrix {
      * @return les éléments de la matrice sous forme d'un String
      */
     public String toString(){
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < n; i++) {
-            result += "| ";
+            result.append("| ");
             for (int j = 0; j < m; j++) {
-                result += matrice[i][j] + " ";
+                result.append(matrice[i][j]).append(" ");
             }
-            result += "|\n";
+            result.append("|\n");
         }
-        result += "\n";
-        return result;
+        result.append("\n");
+        return result.toString();
     }
 
     /**
@@ -132,18 +142,17 @@ public class Matrix {
             Matrix m2 = getResultMatrix(other);
 
             for (int i = 0; i < this.n; i++) {
-                for (int j = 0; j < this.m; j++) {
-                    m1.matrice[i][j] = this.matrice[i][j];
-                }
+                if (this.m >= 0) System.arraycopy(this.matrice[i], 0, m1.matrice[i], 0, this.m);
             }
             for (int i = 0; i < other.n; i++) {
-                for (int j = 0; j < other.m; j++) {
-                    m2.matrice[i][j] = other.matrice[i][j];
-                }
+                if (other.m >= 0) System.arraycopy(other.matrice[i], 0, m2.matrice[i], 0, other.m);
             }
+
+
             m1.modulus = this.modulus;
             m2.modulus = this.modulus;
             return op.operation(m1, m2);
+
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
         }
@@ -151,7 +160,7 @@ public class Matrix {
     }
 
     /**
-     * Opréation d'addition
+     * Opération d'addition
      * @param other est la matrice servant de second opérande à l'opération
      * @return la matrice qui contient le résultat de l'opération
      */
@@ -183,20 +192,25 @@ public class Matrix {
 
     public static void main(String[] args) {
 
-        int n1 = 2, m1 = 5;
-        int n2 = 4, m2 = 3;
+        int n1 = 3, m1 = 4;
+        int n2 = 4, m2 = 5;
         int modulus = 5;
 
         System.out.println("Normal behaviours for operations between two matrixes :");
 
         System.out.println("one");
-        Matrix mat1 = new Matrix(n1, m1, modulus); // Example values for 2nd constructor
-                                                   // {1, 3, 1, 1, 3, 2, 4, 2, 1, 0, 1, 0}
+        //Matrix mat1 = new Matrix(n1, m1, modulus); // Example values for 2nd constructor
+        //Matrix mat1 = new Matrix(m1, new int[]{1, 3, 1, 1, 3, 2, 4, 2, 1, 0, 1} );
+        Matrix mat1 = new Matrix(m1, new int[10]);
+
         System.out.println(mat1);
 
         System.out.println("two");
-        Matrix mat2 = new Matrix(n2, m2, modulus);  // Example values for 2nd constructor
-                                                    // {1, 4, 2, 3, 2, 0, 1, 0, 4, 2, 0, 0, 2, 0, 2}
+        //Matrix mat2 = new Matrix(n2, m2, modulus);  // Example values for 2nd constructor
+        //Matrix mat2 = new Matrix(m2, new int[]{1, 4, 2, 3, 2, 0, 1, 0, 4, 2, 0, 0, 2, 0, 2});
+        Matrix mat2 = new Matrix(m2, new int[10]);
+
+
         System.out.println(mat2);
 
         System.out.println("one + two");
