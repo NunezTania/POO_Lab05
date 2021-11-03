@@ -1,33 +1,31 @@
+/**
+ * Classe Matrice
+ * @autors Tania Nunez, Magali Egger
+ */
 
 import java.util.Random;
 import java.lang.Math;
 
 public class Matrix {
-    public int getN() {
-        return n;
-    }
-
-    public int getM() {
-        return m;
-    }
-
-    public int getModulus() {
-        return modulus;
-    }
-
-    public int[][] getMatrice() {
-        return matrice;
-    }
 
     private int n;
     private int m;
     private int modulus;
-
     int[][] matrice;
 
+    public int getN() { return n; }
+    public int getM() { return m; }
+    public int getModulus() { return modulus; }
+    public int[][] getMatrice() { return matrice; }
 
 
-    // constructeur aléatoire
+    /**
+     * Constructeur par valeur aléatoire
+     * @param n est le nombre de ligne
+     * @param m est le nombre de colonne
+     * @param modulo les éléments de la matrice ont des valeurs entre 0 et modulo-1
+     * @throws RuntimeException indique que le modulo doit être supérieur à zéro
+     */
     public Matrix(int n, int m, int modulo) {
         if (modulo <= 0) {
             throw new RuntimeException("The modulus must be greater than 0.");
@@ -51,10 +49,16 @@ public class Matrix {
     }
 
 
-    // Constructeur par valeur
+    /**
+     * Constructeur de matrice par valeurs fournies
+     * @param m est le nombre de colonne
+     * @param val est le tableau contenant les valeurs des éléments de la matrice
+     * @throws RuntimeException indique que le tableau ne doit par être vide
+     * @throws RuntimeException indique que le modulo doit être supérieur à zéro
+     */
     public Matrix(int m, int[] val) {
         if (val.length == 0) {
-            throw new RuntimeException("You must provide valors for the matrix.");
+            throw new RuntimeException("You must provide values for the matrix.");
         }
         try {
 
@@ -83,6 +87,10 @@ public class Matrix {
         }
     }
 
+    /**
+     * Représente la matrice sous forme de string afin de permettre son affichage
+     * @return les éléments de la matrice sous forme d'un String
+     */
     public String toString(){
         String result = "";
         for (int i = 0; i < n; i++) {
@@ -96,6 +104,11 @@ public class Matrix {
         return result;
     }
 
+    /**
+     * Permet de créer la matrice de résultat de la bonne taille
+     * @param other est la matrice servant de second opérande à l'opération
+     * @return une matrice qui contiendra le résultat d'une opération
+     */
     private Matrix getResultMatrix(Matrix other) {
         int n = Math.max(this.n, other.n);
         int m = Math.max(this.m, other.m);
@@ -103,6 +116,13 @@ public class Matrix {
         return new Matrix(m, tab);
     }
 
+    /**
+     * Effectuer des opérations sur la matrice
+     * @param other est la seconde matrice avec laquelle se fera l'opération
+     * @param op est l'opération choisie
+     * @return stock le résultat de l'opération sous forme d'une nouvelle matrice
+     * @throws RuntimeException indique que les modulos ne sont pas compatibles
+     */
     private Matrix operation(Matrix other, MatrixOperation op) {
         if (this.modulus != other.modulus) {
             throw new RuntimeException("Modulus are not compatible.");
@@ -130,16 +150,31 @@ public class Matrix {
         return null;
     }
 
+    /**
+     * Opréation d'addition
+     * @param other est la matrice servant de second opérande à l'opération
+     * @return la matrice qui contient le résultat de l'opération
+     */
     public Matrix addTo(Matrix other) {
         MatrixOperation op = new Addition();
         return this.operation(other, op);
     }
 
+    /**
+     * Opréation de soustraction
+     * @param other est la matrice servant de second opérande à l'opération
+     * @return la matrice qui contient le résultat de l'opération
+     */
     public Matrix subtractTo(Matrix other) {
         MatrixOperation op = new Subtraction();
         return this.operation(other, op);
     }
 
+    /**
+     * Opréation de multiplication
+     * @param other est la matrice servant de second opérande à l'opération
+     * @return la matrice qui contient le résultat de l'opération
+     */
     public Matrix multBy(Matrix other) {
         MatrixOperation op = new Multiplication();
         return this.operation(other, op);
@@ -174,6 +209,7 @@ public class Matrix {
         System.out.println(mat1.multBy(mat2));
 
         // Abnormal behaviour
+
 
         int n3 = 2, m3 = 5;
         int n4 = 4, m4 = 3;
