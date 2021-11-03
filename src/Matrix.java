@@ -61,9 +61,9 @@ public class Matrix {
             int maxVal = val[0];
 
             for (int x : val) {
+                if (x < 0) throw new RuntimeException("Valors for the matrix must be positive.");
                 maxVal = Math.max(x, maxVal);
             }
-            if (maxVal <= 0) throw new RuntimeException("Modulus must be greater than 0.");
 
             int n = val.length / m;
             this.n = n;
