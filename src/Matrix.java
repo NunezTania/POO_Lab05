@@ -190,11 +190,13 @@ public class Matrix {
         System.out.println("Normal behaviours for operations between two matrixes :");
 
         System.out.println("one");
-        Matrix mat1 = new Matrix(4, new int[]{1, 3, 1, 1, 3, 2, 4, 2, 1, 0, 1, 0}); // n1, m1, modulus
+        Matrix mat1 = new Matrix(n1, m1, modulus); // Example values for 2nd constructor
+                                                   // {1, 3, 1, 1, 3, 2, 4, 2, 1, 0, 1, 0}
         System.out.println(mat1);
 
         System.out.println("two");
-        Matrix mat2 = new Matrix(5, new int[]{1, 4, 2, 3, 2, 0, 1, 0, 4, 2, 0, 0, 2, 0, 2}); // n2, m2, modulus
+        Matrix mat2 = new Matrix(n2, m2, modulus);  // Example values for 2nd constructor
+                                                    // {1, 4, 2, 3, 2, 0, 1, 0, 4, 2, 0, 0, 2, 0, 2}
         System.out.println(mat2);
 
         System.out.println("one + two");
