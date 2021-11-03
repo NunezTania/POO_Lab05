@@ -1,4 +1,7 @@
-
+/**
+ * Classe Soustraction
+ * @autors Tania Nunez, Magali Egger
+ */
 public class Subtraction extends MatrixOperation{
 
     /**
@@ -12,7 +15,7 @@ public class Subtraction extends MatrixOperation{
         Matrix result = new Matrix(m1.getN(), m1.getM(), m1.getModulus());
         for (int i = 0; i < m1.getN(); i++) {
             for (int j = 0; j < m1.getM(); j++) {
-                result.getMatrice()[i][j] = Math.floorMod(m1.getMatrice()[i][j] - m2.getMatrice()[i][j], m1.getModulus());
+                result.getMatrix()[i][j] = Math.floorMod(m1.getMatrix()[i][j] - m2.getMatrix()[i][j], m1.getModulus());
             }
         }
         return result;
