@@ -94,7 +94,6 @@ public class Matrix {
                 for (int j = 0; j < m && i * m + j < val.length; j++) {
                     matrix[i][j] = val[i * m + j];
                 }
-                System.arraycopy(val, i * m, matrix[i], 0, m);
             }
         }
         catch (RuntimeException e) {
@@ -204,51 +203,48 @@ public class Matrix {
         int n1 = 3, m1 = 4;
         int n2 = 4, m2 = 5;
         int modulus = 5;
-        Matrix mat = new Matrix(3, 3, new int[]{1, 2, 3, 4, 5, 6, 7});
-        System.out.println(mat);
-        System.out.println("Normal behaviours for operations between two matrixes :");
-        System.out.println("one");
+
+        System.out.println("Normal behaviour for operations between two matrixes :\n");
+
+        System.out.println("one\n");
         Matrix mat1 = new Matrix(n1, m1, modulus);
         System.out.println(mat1);
 
-        System.out.println("two");
+        System.out.println("two\n");
         Matrix mat2 = new Matrix(n2, m2, modulus);  // Example values for 2nd constructor
                                                     // {1, 4, 2, 3, 2, 0, 1, 0, 4, 2, 0, 0, 2, 0, 2}
         System.out.println(mat2);
 
-        System.out.println("one + two");
+        System.out.println("one + two\n");
         System.out.println(mat1.addTo(mat2));
 
-        System.out.println("one - two");
+        System.out.println("one - two\n");
         System.out.println(mat1.subtractTo(mat2));
 
-        System.out.println("one x two");
+        System.out.println("one x two\n");
         System.out.println(mat1.multBy(mat2));
-
-        // Abnormal behaviour
-
 
         int n3 = 2, m3 = 5;
         int n4 = 4, m4 = 3;
-        int modulus1 = 5;
-        int modulus2 = 4;
+        int modulus1 = 5, modulus2 = 4;
 
-        System.out.println("Operations between two uncompatible matrixes :");
-        System.out.println("one");
+        System.out.println("Operations between two uncompatible matrixes :\n");
+
+        System.out.println("one\n");
         Matrix mat3 = new Matrix(n3, m3, modulus1);
         System.out.println(mat3);
 
-        System.out.println("two");
+        System.out.println("two\n");
         Matrix mat4 = new Matrix(n4, m4, modulus2);
         System.out.println(mat4);
 
-        System.out.println("one + two");
+        System.out.println("one + two\n");
         System.out.println(mat3.addTo(mat4));
 
-        System.out.println("one - two");
+        System.out.println("one - two\n");
         System.out.println(mat3.subtractTo(mat4));
 
-        System.out.println("one x two");
+        System.out.println("one x two\n");
         System.out.println(mat3.multBy(mat4));
     }
 }
