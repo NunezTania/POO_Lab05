@@ -1,6 +1,7 @@
 /**
-  * Classe Matrix
-  * @autors Tania Nunez, Magali Egger
+ * Classe Matrix
+ * @autor Tania Nunez
+ * @autor Magali Egger
  */
 
 import java.util.Random;
@@ -27,15 +28,22 @@ public class Matrix {
      * @throws RuntimeException indique si le modulus est inférieur à zéro
      */
     public Matrix(int n, int m, int modulo) {
+        // vérification du modulo
         if (modulo <= 0) {
             throw new RuntimeException("The modulus must be greater than 0.");
         }
+        // vérification des tailles m et n
+        if(n <= 0 || m <= 0){
+            throw new RuntimeException("The sizes of the matrix must be greater than 0");
+        }
+
         try {
             this.n = n;
             this.m = m;
             this.modulus = modulo;
             int[][] mat = new int[n][m];
 
+            // chaque élément de la matrice prend une valeur random entre 0 et modulo-1
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < m; j++) {
                     Random rand = new Random();
@@ -63,6 +71,7 @@ public class Matrix {
         if (val.length == 0) {
             throw new RuntimeException("You must provide values for the matrix.");
         }
+
         if (n <= 0 || m <= 0) {
             throw new RuntimeException("Invalid matrix size");
         }
@@ -85,6 +94,7 @@ public class Matrix {
                 for (int j = 0; j < m && i * m + j < val.length; j++) {
                     matrix[i][j] = val[i * m + j];
                 }
+                System.arraycopy(val, i * m, matrix[i], 0, m);
             }
         }
         catch (RuntimeException e) {
@@ -97,16 +107,16 @@ public class Matrix {
      * @return la matrice sous la forme d'un String
      */
     public String toString(){
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < n; i++) {
-            result += "| ";
+            result.append("| ");
             for (int j = 0; j < m; j++) {
-                result += matrix[i][j] + " ";
+                result.append(matrix[i][j]).append(" ");
             }
-            result += "|\n";
+            result.append("|\n");
         }
-        result += "\n";
-        return result;
+        result.append("\n");
+        return result.toString();
     }
 
     /**
@@ -141,18 +151,17 @@ public class Matrix {
             Matrix m2 = getResultSizedMatrix(other);
 
             for (int i = 0; i < this.n; i++) {
-                for (int j = 0; j < this.m; j++) {
-                    m1.matrix[i][j] = this.matrix[i][j];
-                }
+                if (this.m >= 0) System.arraycopy(this.matrix[i], 0, m1.matrix[i], 0, this.m);
             }
             for (int i = 0; i < other.n; i++) {
-                for (int j = 0; j < other.m; j++) {
-                    m2.matrix[i][j] = other.matrix[i][j];
-                }
+                if (other.m >= 0) System.arraycopy(other.matrix[i], 0, m2.matrix[i], 0, other.m);
             }
+
+
             m1.modulus = this.modulus;
             m2.modulus = this.modulus;
             return op.operation(m1, m2);
+
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
         }
@@ -192,8 +201,8 @@ public class Matrix {
 
     public static void main(String[] args) {
 
-        int n1 = 2, m1 = 5;
-        int n2 = 4, m2 = 3;
+        int n1 = 3, m1 = 4;
+        int n2 = 4, m2 = 5;
         int modulus = 5;
         Matrix mat = new Matrix(3, 3, new int[]{1, 2, 3, 4, 5, 6, 7});
         System.out.println(mat);
